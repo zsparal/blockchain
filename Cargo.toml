@@ -1,0 +1,30 @@
+[package]
+name = "iridium-blockchain"
+version = "0.1.0"
+authors = ["Gustorn <gustorn@gmail.com>"]
+
+[lib]
+name = "iridium"
+
+[[bin]]
+name = "server"
+path = "src/server.rs"
+
+[[bin]]
+name = "client"
+path = "src/client.rs"
+
+[dependencies]
+bincode = "0.8.0"
+chrono = "0.4.0"
+hex = "0.2.0"
+itertools = "0.6.5"
+ring = "0.12.1"
+rocket = { git = "https://github.com/SergioBenitez/Rocket.git" }
+rocket_codegen = { git = "https://github.com/SergioBenitez/Rocket.git" }
+rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket.git" }
+serde = "1.0.15"
+serde_derive = "1.0.15"
+serde_json = "1.0.3"
+untrusted = "0.5.1"
+uuid = { version = "0.5.1", features = ["serde", "v4"] }
