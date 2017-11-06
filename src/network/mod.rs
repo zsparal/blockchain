@@ -2,6 +2,7 @@ use core;
 
 #[derive(Serialize, Deserialize)]
 pub struct Transfer {
+    pub id: String,
     pub amount: u64,
     pub sender: String,
     pub recipient: String,
@@ -21,6 +22,7 @@ pub struct BlockchainResult {
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Client {
+    pub name: Option<String>,
     pub public_key: String,
 }
 

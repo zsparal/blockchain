@@ -4,11 +4,14 @@
 
 extern crate rocket;
 extern crate rocket_contrib;
+extern crate rocket_cors;
 
 extern crate iridium;
 
 use rocket::State;
 use rocket_contrib::Json;
+
+use std::collections::HashMap;
 use std::sync::RwLock;
 
 use iridium::core::{self, Blockchain, Block};
@@ -16,7 +19,7 @@ use iridium::network::{self, BlockchainResult, BlockIndexResult, Client, ClientL
 
 struct App {
     blockchain: RwLock<Blockchain>,
-    clients: RwLock<Vec<Client>>,
+    clients: RwLock<HashMap<String, Client>>,
 }
 
 #[post("/transactions/new", data = "<transfer>")]
@@ -38,13 +41,15 @@ fn chain(app: State<App>) -> Json<BlockchainResult> {
 #[post("/clients/register", data = "<client>")]
 fn register_client(client: Json<Client>, app: State<App>) -> () {
     let mut clients = app.clients.write().unwrap();
-    clients.push(client.into_inner());
+    let client = client.into_inner();
+    let public_key = client.public_key.clone();
+    clients.insert(public_key, client);
 }
 
 #[get("/clients")]
 fn clients(app: State<App>) -> Json<ClientList> {
     let clients = app.clients.read().unwrap();
-    Json(ClientList { clients: (*clients).clone() })
+    Json(ClientList { clients: clients.values().cloned().collect() })
 }
 
 #[get("/mine")]
@@ -59,11 +64,13 @@ fn mine(app: State<App>) -> Json<Option<Block>> {
 
 
 fn main() {
+    let options: rocket_cors::Cors = Default::default();
     rocket::ignite()
         .manage(App {
             blockchain: RwLock::new(core::Blockchain::new()),
-            clients: RwLock::new(Vec::new()),
+            clients: RwLock::new(HashMap::new()),
         })
-        .mount("/", routes![new_transaction, chain, mine])
+        .mount("/", routes![new_transaction, chain, mine, register_client, clients])
+        .attach(options)
         .launch();
 }

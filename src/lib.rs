@@ -7,6 +7,7 @@ extern crate hex;
 extern crate itertools;
 extern crate ring;
 extern crate serde;
+extern crate serde_json;
 extern crate untrusted;
 extern crate uuid;
 

@@ -1,10 +1,10 @@
 use hex::{FromHex, ToHex};
-use ring::signature;
+use ring::{digest, signature};
+use serde_json;
 use untrusted;
 use uuid::Uuid;
 
 use network;
-use super::BlockHash;
 
 pub const MINER_REWARD: u64 = 1;
 
@@ -15,14 +15,6 @@ pub struct Transfer {
     sender: String,
     recipient: String,
     signature: String,
-}
-
-#[derive(Debug, Serialize)]
-pub struct SignedTransfer<'a> {
-    id: Uuid,
-    sender: &'a str,
-    recipient: &'a str,
-    amount: u64,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
@@ -38,10 +30,19 @@ pub enum Transaction {
     Reward(Reward),
 }
 
+#[derive(Debug, Serialize)]
+struct SignedTransfer<'a> {
+    id: Uuid,
+    sender: &'a str,
+    recipient: &'a str,
+    amount: u64,
+}
+
 impl From<network::Transfer> for Transfer {
     fn from(transfer: network::Transfer) -> Self {
+        let id = Uuid::parse_str(&transfer.id).expect("Incorrect transfer UUID");
         Self {
-            id: Uuid::new_v4(),
+            id,
             amount: transfer.amount,
             sender: transfer.sender,
             recipient: transfer.recipient,
@@ -105,13 +106,17 @@ impl Transaction {
         ).is_ok()
     }
 
-    fn transfer_hash(transfer: &Transfer) -> String {
-        let t = SignedTransfer {
+    fn transfer_hash(transfer: &Transfer) -> Vec<u8> {
+        let signed_transfer = SignedTransfer {
             id: transfer.id,
-            sender: &transfer.recipient,
+            sender: &transfer.sender,
             recipient: &transfer.recipient,
-            amount: transfer.amount,
+            amount: transfer.amount
         };
-        t.calculate_hash()
+        serde_json::to_string(&signed_transfer)
+            .map(|message| digest::digest(&digest::SHA512, message.as_ref()))
+            .expect("Transactions must be able to generate a hash")
+            .as_ref()
+            .into()
     }
 }

@@ -10,19 +10,16 @@ name = "iridium"
 name = "server"
 path = "src/server.rs"
 
-[[bin]]
-name = "client"
-path = "src/client.rs"
-
 [dependencies]
 bincode = "0.8.0"
 chrono = "0.4.0"
 hex = "0.2.0"
 itertools = "0.6.5"
-ring = "0.12.1"
-rocket = { git = "https://github.com/SergioBenitez/Rocket.git" }
-rocket_codegen = { git = "https://github.com/SergioBenitez/Rocket.git" }
-rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket.git" }
+ring = "0.11.0"
+rocket = "0.3.3"
+rocket_codegen = "0.3.3"
+rocket_contrib = "0.3.3"
+rocket_cors = "0.2.0"
 serde = "1.0.15"
 serde_derive = "1.0.15"
 serde_json = "1.0.3"
