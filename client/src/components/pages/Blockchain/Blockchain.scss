@@ -1,0 +1,55 @@
+.blockchain-padding {
+  padding: 16px 24px;
+}
+
+.blockchain-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.client-port {
+  margin-left: 8px !important;
+}
+
+.accept-controlled {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.control-row {
+  display: flex;
+}
+
+.control-row.second {
+  margin-top: 16px;
+}
+
+.spoof-sender {
+  width: 100%;
+}
+
+.select-recipient {
+  width: 100%;
+  margin-top: 10px !important;
+}
+
+.input-amount {
+  width: 100% !important;
+  margin-top: 10px !important;
+}
+
+.send-transaction {
+  width: 100% !important;
+  height: 40px !important;
+  margin-top: 10px !important;
+}
+
+.miner-commands {
+  display: flex;
+  flex-direction: column;
+}
+
+.miner-command {
+  width: 100% !important;
+  margin-top: 10px !important;
+}

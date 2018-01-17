@@ -5,6 +5,7 @@ extern crate bincode;
 extern crate chrono;
 extern crate hex;
 extern crate itertools;
+extern crate rand;
 extern crate ring;
 extern crate serde;
 extern crate serde_json;

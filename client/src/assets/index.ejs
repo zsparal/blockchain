@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <% if (Array.isArray(htmlWebpackPlugin.options.meta)) { %>
+    <% for (const item of htmlWebpackPlugin.options.meta) { %>
+      <meta<% for (const key in item) { %> <%= key %>= "<%= item[key] %>" <% } %>>
+    <% } %>
+  <% } %>
+
+  <% for (const key in htmlWebpackPlugin.files.css) { %>
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[key] %>"
+      integrity="<%= htmlWebpackPlugin.files.cssIntegrity[key] %>"
+      crossorigin="<%= webpackConfig.output.crossOriginLoading %>">
+  <% } %>
+
+  <link rel="manifest" href="<%= htmlWebpackPlugin.options.publicPath %>manifest.json">
+
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+</head>
+
+<body>
+  <div id="root">
+  </div>
+
+  <% for (const key in htmlWebpackPlugin.files.js) { %>
+    <script defer src="<%= htmlWebpackPlugin.files.js[key] %>" <% if (htmlWebpackPlugin.files.jsIntegrity) { %>
+      integrity = "<%= htmlWebpackPlugin.files.jsIntegrity[key] %>"
+      crossorigin = "<%= webpackConfig.output.crossOriginLoading %>"
+    <% } %>
+  ></script>
+  <% } %>
+</body>
+</html>

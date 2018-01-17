@@ -1,0 +1,14 @@
+.tx-reward,
+.tx-transfer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  span {
+    flex: 1 1 0;
+  }
+}
+
+.text-right {
+  text-align: right;
+}

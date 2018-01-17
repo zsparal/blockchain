@@ -1,0 +1,7 @@
+{
+  "name": "Blockchain",
+  "short_name": "blockchain",
+  "start_url": "./?manifest=true",
+  "display": "standalone",
+  "description": "An education blockchain client"
+}
